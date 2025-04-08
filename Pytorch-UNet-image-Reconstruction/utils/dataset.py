@@ -22,17 +22,17 @@ class BasicDataset(Dataset):
         return len(self.ids)
 
     @classmethod
-    # 在 dataset.py 的 preprocess 函数中添加打印语句
-    def preprocess(cls, pil_img, scale):
+    def preprocess(cls, pil_img, scale, target_size=(128, 128)):
         if pil_img.mode != 'RGB':
             pil_img = pil_img.convert('RGB')
+        # 调整到目标大小 (例如 128x128)
+        pil_img = pil_img.resize(target_size)
         w, h = pil_img.size
         newW, newH = int(scale * w), int(scale * h)
         assert newW > 0 and newH > 0, 'Scale is too small'
         pil_img = pil_img.resize((newW, newH))
 
         img_nd = np.array(pil_img)
-
         if len(img_nd.shape) == 2:
             img_nd = np.expand_dims(img_nd, axis=2)
 
@@ -40,7 +40,6 @@ class BasicDataset(Dataset):
         img_trans = img_nd.transpose((2, 0, 1))
         if img_trans.max() > 1:
             img_trans = img_trans / 255
-        #print(f"Preprocessed image min: {img_trans.min()}, max: {img_trans.max()}")  # 检查像素值范围
         return img_trans
 
     def __getitem__(self, i):

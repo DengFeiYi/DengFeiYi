@@ -78,7 +78,7 @@ def get_args():
     if args.input:
         expanded_inputs = []
         for input_pattern in args.input:
-            if input_pattern.endswith('.tif'):
+            if input_pattern.endswith('.png'):
                 expanded_inputs.extend(glob.glob(input_pattern))
         args.input = expanded_inputs
 
