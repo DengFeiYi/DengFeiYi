@@ -15,7 +15,7 @@ class BasicDataset(Dataset):
         assert 0 < scale <= 1, 'Scale must be between 0 and 1'
 
         self.ids = [splitext(file)[0] for file in listdir(imgs_dir)
-                    if not file.startswith('.') and file.endswith('.tif')]
+                    if not file.startswith('.') and file.endswith('.png')]
         logging.info(f'Creating dataset with {len(self.ids)} examples')
 
     def __len__(self):
@@ -45,8 +45,8 @@ class BasicDataset(Dataset):
 
     def __getitem__(self, i):
         idx = self.ids[i]
-        mask_file = glob(f'{self.masks_dir}{idx}.tif')
-        img_file = glob(f'{self.imgs_dir}{idx}.tif')
+        mask_file = glob(f'{self.masks_dir}{idx}.png')
+        img_file = glob(f'{self.imgs_dir}{idx}.png')
 
         assert len(mask_file) == 1, \
             f'Either no mask or multiple masks found for the ID {idx}: {mask_file}'
